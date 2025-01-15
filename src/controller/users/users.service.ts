@@ -2,37 +2,36 @@
 import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { User } from '../../schemas/users.schema';
-//import { CreateCatDto } from './dto/create-cat.dto';
+import { IUser, User, UserDocument } from '../../schemas/users.schema';
 
 @Injectable()
 export class UsersService {
-    constructor(@InjectModel(User.name) private usersModel: Model<any>) { }
+    constructor(@InjectModel(User.name) private readonly usersModel: Model<UserDocument>) { }
     //constructor(@InjectConnection('users') private connection: Connection) {}
     //constructor(@InjectModel(Cat.name, 'cats') private catModel: Model<Cat>) {}
 
-    async singIn(username: string): Promise<any| null|undefined> {
+    async singIn(username: string): Promise<any | null | undefined> {
         return this.usersModel.find(user => user.username === username);
 
-     //   return this.usersModel.findOne({ username }).exec();
+        //   return this.usersModel.findOne({ username }).exec();
 
     }
 
-    async findOne(): Promise<typeof User> {
+    async findOne(): Promise<IUser> {
         return this.usersModel.findOne().exec();
 
     }
 
 
-    async findAll(): Promise<typeof User[]> {
+    async findAll(): Promise<IUser[]> {
         return this.usersModel.find().exec();
     }
 
-    async create(createCatDto: any): Promise<typeof User> {
+    async create(createCatDto: any): Promise<IUser> {
         try {
-            const createdCat = new this.usersModel(createCatDto);
-            createdCat.save()
-            return createdCat;
+            const createdUser = await this.usersModel.create(createCatDto); // Correct way to create a document
+            createdUser.save()
+            return createdUser;
         } catch (error) {
             console.log(error)
         }

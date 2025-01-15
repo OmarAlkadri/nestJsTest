@@ -27,7 +27,7 @@ export class MongooseConfigService implements MongooseOptionsFactory {
 
 
     createMongooseOptions(): MongooseModuleOptions {
-        const url = `mongodb://${this.config.get<string>('MONGODB_HOST')}:${this.config.get<string>('MONGODB_PORT')}/nest`
+        const url = `mongodb://${this.config.get<string>('MONGODB_HOST')}:${this.config.get<string>('MONGODB_PORT')}/nestjs_db`
         return {
             uri: url,
         };
